@@ -59,7 +59,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ProjectTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -78,12 +77,10 @@ class MainActivity : ComponentActivity() {
 fun LoginScreen() {
     val mContext = LocalContext.current
 
-    // Create a column that fills the maximum width of the screen
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
-        // Create a text with the title of the screen
         Text(
             text = "Login",
             style = TextStyle(
@@ -91,12 +88,9 @@ fun LoginScreen() {
                 color = Color.Black,
                 fontWeight = FontWeight.Bold
             ),
-            // Align the text to the center horizontally
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
-        // Add some vertical space between the title and the label
         Spacer(modifier = Modifier.height(16.dp))
-        // Create a text with the label of the username field
         Text(
             text = "Username",
             style = TextStyle(
@@ -104,26 +98,21 @@ fun LoginScreen() {
                 color = Color.Black,
                 fontWeight = FontWeight.Normal
             ),
-            // Add some horizontal padding to the text
             modifier = Modifier.padding(horizontal = 16.dp)
         )
-        // Add some vertical space between the label and the field
         Spacer(modifier = Modifier.height(8.dp))
-        // Create a text field for the username input
         TextField(
-            value = "", // You can use a state variable to store and update the value of the field
-            onValueChange = {}, // You can use a lambda function to handle the value change event
-            placeholder = { Text("Enter your username") }, // You can use a placeholder text to indicate what to enter
-            singleLine = true, // You can set the field to accept only one line of input
+            value = "",
+            onValueChange = {},
+            placeholder = { Text("Enter your username") },
+            singleLine = true,
             modifier = Modifier
-                // Fill the maximum width of the column
+
                 .fillMaxWidth()
-                // Add some horizontal padding to the field
                 .padding(horizontal = 16.dp)
         )
-        // Add some vertical space between the fields
+
         Spacer(modifier = Modifier.height(16.dp))
-        // Create a text with the label of the password field
         Text(
             text = "Password",
             style = TextStyle(
@@ -131,27 +120,20 @@ fun LoginScreen() {
                 color = Color.Black,
                 fontWeight = FontWeight.Normal
             ),
-            // Add some horizontal padding to the text
             modifier = Modifier.padding(horizontal = 16.dp)
         )
-        // Add some vertical space between the label and the field
         Spacer(modifier = Modifier.height(8.dp))
-        // Create a text field for the password input
         TextField(
-            value = "", // You can use a state variable to store and update the value of the field
-            onValueChange = {}, // You can use a lambda function to handle the value change event
-            placeholder = { Text("Enter your password") }, // You can use a placeholder text to indicate what to enter
-            singleLine = true, // You can set the field to accept only one line of input
-            visualTransformation = PasswordVisualTransformation(), // You can use a visual transformation to mask the password input
+            value = "",
+            onValueChange = {},
+            placeholder = { Text("Enter your password") },
+            singleLine = true,
+            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier
-                // Fill the maximum width of the column
                 .fillMaxWidth()
-                // Add some horizontal padding to the field
                 .padding(horizontal = 16.dp)
         )
-        // Add some vertical space between the field and the button
         Spacer(modifier = Modifier.height(16.dp))
-        // Create a button for the login action
         Button(
             onClick = {
                 mContext.startActivity(Intent(mContext, HomeScreen::class.java))
@@ -165,7 +147,6 @@ fun LoginScreen() {
                 .align(Alignment.CenterHorizontally)
 
         ) {
-            // Create a text with the label of the button
             Text(
                 text = "Login",
                 style = TextStyle(
