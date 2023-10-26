@@ -136,7 +136,7 @@ fun LoginScreen() {
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-                mContext.startActivity(Intent(mContext, HomeScreen::class.java))
+                mContext.startActivity(Intent(mContext, CardsScreen::class.java))
             },
 
             colors = ButtonDefaults.buttonColors( Color(0xFF280D75)),
