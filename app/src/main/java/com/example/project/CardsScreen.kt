@@ -20,6 +20,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -70,6 +72,11 @@ class CardsScreen : ComponentActivity() {
 
 @Composable
 fun Cards(){
+    val cards = listOf(
+        R.drawable.card,
+        R.drawable.card1,
+        R.drawable.card2,
+    )
 
     Box {
         Column( modifier = Modifier
@@ -112,7 +119,38 @@ fun Cards(){
 
                 }
               Column (modifier = Modifier.padding(24.dp)) {
-                  Image (painter = painterResource(id = R.drawable.card), contentDescription = null)
+                  val pagerState = rememberPagerState()
+                  Column(
+//                      modifier = Modifier.fillMaxSize()
+                  )
+                  {
+                      HorizontalPager(
+                          pageCount = cards.size,
+                          state = pagerState,
+                          key = { cards[it] },
+                          pageSize = PageSize.Fixed(330.dp)
+
+                      )
+
+                      {index ->
+
+                          Column {
+                              Image(
+                                  painter = painterResource(id = cards[index]),
+                                  contentDescription = null,
+                                  //                            contentScale = ContentScale.Crop ,
+                                  modifier = Modifier
+//                                      .fillMaxSize()
+                                      .padding(end = 20.dp)
+
+                              )
+                          }
+
+
+                      }
+
+
+                  }
               }
 
                 Column (
