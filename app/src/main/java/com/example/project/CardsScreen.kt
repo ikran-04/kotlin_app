@@ -2,6 +2,7 @@
 
 package com.example.project
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,11 +24,21 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -37,11 +48,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -49,21 +63,109 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.project.ui.theme.ProjectTheme
 import kotlinx.coroutines.delay
 import java.lang.Thread.yield
 
+data class BottomNavigationItem(
+    val title:String,
+    val selectedIcon: Painter,
+    val unSelectedIcon : Painter,
+    val hasNews : Boolean,
+    val badgeCount : Int? = null
+)
 class CardsScreen : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController();
+
             ProjectTheme {
+                val items = listOf(
+                    BottomNavigationItem(
+                        title = "Home",
+                        selectedIcon = painterResource(id =R.drawable.s_anlytics ),
+                        unSelectedIcon = painterResource(id =R.drawable.un_anlytics ),
+                        hasNews = false,
+                    ),
+                    BottomNavigationItem(
+                        title = "History",
+                        selectedIcon = painterResource(id =R.drawable.s_home ),
+                        unSelectedIcon =painterResource(id =R.drawable.un_home ),
+                        hasNews = false,
+                        badgeCount =4
+                    ),
+                    BottomNavigationItem(
+                        title = "Home",
+                        selectedIcon = painterResource(id =R.drawable.plus ) ,
+                        unSelectedIcon =painterResource(id =R.drawable.plus ),
+                        hasNews = false,
+                    ),
+                    BottomNavigationItem(
+                        title = "Cards",
+                        selectedIcon =  painterResource(id =R.drawable.s_cards ),
+                        unSelectedIcon = painterResource(id =R.drawable.un_cards ),
+                        hasNews = false,
+                    ),
+                    BottomNavigationItem(
+                        title = "Settings",
+                        selectedIcon = painterResource(id =R.drawable.s_settings ),
+                        unSelectedIcon = painterResource(id =R.drawable.un_settings ),
+                        hasNews = false,
+                    )
+                )
+                var selectedItemIndex by rememberSaveable {
+                    mutableStateOf(0)
+                }
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Cards()
+                    Scaffold (
+                        bottomBar = {
+                            NavigationBar {
+                                items.forEachIndexed { index, item ->
+                                    NavigationBarItem(
+                                        selected = selectedItemIndex == index,
+                                        onClick = {  selectedItemIndex =index
+                                             navController.navigate(item.title)},
+                                        label = { Text(text = item.title) },
+                                        icon = {
+                                            BadgedBox(
+                                                badge = {
+                                                    if(item.badgeCount != null){
+                                                        Badge {
+                                                            Text(text = item.badgeCount.toString())
+                                                        }
+                                                    }else if(item.hasNews){
+                                                        Badge()
+                                                    }
+
+                                                }
+                                            ) {
+
+                                                Icon(
+                                                    painter = if (index == selectedItemIndex) {
+                                                        item.selectedIcon
+                                                    } else item.unSelectedIcon,
+                                                    contentDescription = item.title
+                                                )
+
+
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        }
+
+                    ){
+                            Cards()
+                    }
                 }
             }
         }
@@ -72,13 +174,14 @@ class CardsScreen : ComponentActivity() {
 
 @Composable
 fun Cards(){
+    val scrollState = rememberScrollState ()
     val cards = listOf(
         R.drawable.card,
         R.drawable.card1,
         R.drawable.card2,
     )
 
-    Box {
+    Box{
         Column( modifier = Modifier
 //            .height(70.dp)
             .background(Color(0xFF211064))
@@ -155,9 +258,15 @@ fun Cards(){
 
                 Column (
                     verticalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.padding(24.dp)
+                    modifier = Modifier
+                        .padding(24.dp)
+                        .verticalScroll(scrollState)
                 ) {
                     Text(text = "Card Settings",fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color(0xFF211064))
+                    CardSetting()
+                    CardSetting()
+                    CardSetting()
+                    CardSetting()
                     CardSetting()
                     CardSetting()
                     CardSetting()
