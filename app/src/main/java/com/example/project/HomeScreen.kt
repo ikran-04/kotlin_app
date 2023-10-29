@@ -19,8 +19,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -65,6 +67,9 @@ class HomeScreen : ComponentActivity() {
 fun HomeScreeen(modifier: Modifier = Modifier){
     val incomeImg = painterResource(id = R.drawable.income)
     val expensesImg = painterResource(id = R.drawable.expenses)
+
+    val scrollState = rememberScrollState ()
+
 
     val Green = Color(0xFF0EB400)
     val Orange = Color(0xFFFF5C00)
@@ -129,10 +134,10 @@ fun HomeScreeen(modifier: Modifier = Modifier){
                     .padding(top = 30.dp)
             ){
 
-                IconBox("Send")
-                IconBox("Request")
-                IconBox("Loan")
-                IconBox("Topup")
+                IconBox("Send" , icon = painterResource(id = R.drawable.wallet))
+                IconBox("Request" , icon = painterResource(id = R.drawable.money_hand))
+                IconBox("Loan", icon = painterResource(id = R.drawable.money_bag))
+                IconBox("Topup", icon = painterResource(id = R.drawable.loan))
 
             }
 
@@ -141,7 +146,7 @@ fun HomeScreeen(modifier: Modifier = Modifier){
         }
         Column(
             modifier = Modifier
-                .background(Color(0xFFF8F9F9),shape = RoundedCornerShape(15.dp))
+                .background(Color(0xFFF8F9F9), shape = RoundedCornerShape(15.dp))
                 .padding(vertical = 34.dp, horizontal = 24.dp)
                 .fillMaxWidth()
                 .fillMaxHeight()
@@ -174,8 +179,8 @@ fun HomeScreeen(modifier: Modifier = Modifier){
                 Column (
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ){
-                    Transaction(Orange)
-                    Transaction(Orange)
+                    Transaction(Orange , icon = painterResource(id = R.drawable.cart))
+                    Transaction(Orange , icon = painterResource(id = R.drawable.ubber))
                 }
             }
             //Yesterday
@@ -185,9 +190,14 @@ fun HomeScreeen(modifier: Modifier = Modifier){
                     fontSize = 18.sp, color = Color(0xFFD8D8D8),modifier= Modifier.padding(vertical = 10.dp))
                 Column (
                     verticalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier
+                    .verticalScroll(scrollState)
+
                 ){
-                    Transaction(Green)
-                    Transaction(Green)
+                    Transaction(Green , icon = painterResource(id = R.drawable.ubber))
+                    Transaction(Green ,icon = painterResource(id = R.drawable.cart_greem))
+                    Transaction(Green ,icon = painterResource(id = R.drawable.cart_greem))
+                    Transaction(Green ,icon = painterResource(id = R.drawable.cart_greem))
                 }
             }
         }
@@ -198,7 +208,7 @@ fun HomeScreeen(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun Transaction(clr: Color){
+fun Transaction(clr: Color , icon: Painter){
     Row (
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -231,10 +241,10 @@ fun Transaction(clr: Color){
                 )
                 // Create an icon from a vector drawable resource
                 Icon(
-                    Icons.Filled.ShoppingCart,
+                    painter = icon,
                     contentDescription = "icon",
                     // Set the tint color of the icon
-                    tint = Color.Black,
+                    tint = Color(0xFF7158B8),
                     // Set the size of the icon
                     modifier = Modifier
                         .size(30.dp)
@@ -257,7 +267,7 @@ fun Transaction(clr: Color){
 }
 
 @Composable
-fun IconBox(lable:String=""){
+fun IconBox(lable:String="", icon: Painter){
     Column (
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -275,10 +285,10 @@ fun IconBox(lable:String=""){
             )
             // Create an icon from a vector drawable resource
             Icon(
-                Icons.Filled.ShoppingCart,
+                painter = icon,
                 contentDescription = "icon",
                 // Set the tint color of the icon
-                tint = Color.Black,
+                tint = Color(0xFF7158B8),
                 // Set the size of the icon
                 modifier = Modifier
                     .size(30.dp)

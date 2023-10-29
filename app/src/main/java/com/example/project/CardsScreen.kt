@@ -63,6 +63,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.project.ui.theme.ProjectTheme
 import kotlinx.coroutines.delay
@@ -81,91 +84,17 @@ class CardsScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController();
+
 
             ProjectTheme {
-                val items = listOf(
-                    BottomNavigationItem(
-                        title = "Home",
-                        selectedIcon = painterResource(id =R.drawable.s_anlytics ),
-                        unSelectedIcon = painterResource(id =R.drawable.un_anlytics ),
-                        hasNews = false,
-                    ),
-                    BottomNavigationItem(
-                        title = "History",
-                        selectedIcon = painterResource(id =R.drawable.s_home ),
-                        unSelectedIcon =painterResource(id =R.drawable.un_home ),
-                        hasNews = false,
-                        badgeCount =4
-                    ),
-                    BottomNavigationItem(
-                        title = "Home",
-                        selectedIcon = painterResource(id =R.drawable.plus ) ,
-                        unSelectedIcon =painterResource(id =R.drawable.plus ),
-                        hasNews = false,
-                    ),
-                    BottomNavigationItem(
-                        title = "Cards",
-                        selectedIcon =  painterResource(id =R.drawable.s_cards ),
-                        unSelectedIcon = painterResource(id =R.drawable.un_cards ),
-                        hasNews = false,
-                    ),
-                    BottomNavigationItem(
-                        title = "Settings",
-                        selectedIcon = painterResource(id =R.drawable.s_settings ),
-                        unSelectedIcon = painterResource(id =R.drawable.un_settings ),
-                        hasNews = false,
-                    )
-                )
-                var selectedItemIndex by rememberSaveable {
-                    mutableStateOf(0)
-                }
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Scaffold (
-                        bottomBar = {
-                            NavigationBar {
-                                items.forEachIndexed { index, item ->
-                                    NavigationBarItem(
-                                        selected = selectedItemIndex == index,
-                                        onClick = {  selectedItemIndex =index
-                                             navController.navigate(item.title)},
-                                        label = { Text(text = item.title) },
-                                        icon = {
-                                            BadgedBox(
-                                                badge = {
-                                                    if(item.badgeCount != null){
-                                                        Badge {
-                                                            Text(text = item.badgeCount.toString())
-                                                        }
-                                                    }else if(item.hasNews){
-                                                        Badge()
-                                                    }
 
-                                                }
-                                            ) {
-
-                                                Icon(
-                                                    painter = if (index == selectedItemIndex) {
-                                                        item.selectedIcon
-                                                    } else item.unSelectedIcon,
-                                                    contentDescription = item.title
-                                                )
-
-
-                                            }
-                                        }
-                                    )
-                                }
-                            }
-                        }
-
-                    ){
                             Cards()
-                    }
                 }
             }
         }
